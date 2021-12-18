@@ -1,6 +1,6 @@
 #s3 bucket
 resource "aws_s3_bucket" "longb_s3" {
-  bucket = "s3-bucket-terrafrom"
+  bucket = "longb_s3"
   acl    = "private"
 
   tags = {
