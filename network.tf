@@ -34,11 +34,11 @@ resource "aws_subnet" "longb_subnet2" {
 }
 #DB subnet group for RDS
 resource "aws_db_subnet_group" "longb_subnet_grp" {
-  name       = "longb_rds_subnet_grp"
-  subnet_ids = [aws_subnet.longb_subnet1.id, aws_subnet.longb_subnet2.id]
+  name       = "longb_subnet_grp"
+  subnet_ids = [aws_subnet.longb_subnet1.id,aws_subnet.longb_subnet2.id]
 
   tags = {
-    Name = "My DB subnet group"
+    Name = "longb_subnet_grp"
   }
 }
 #ec2 security group
@@ -48,19 +48,19 @@ resource "aws_security_group" "longb_VPC_SG" {
   vpc_id      = aws_vpc.longb_VPC.id
 
   ingress {
-    description      = "MySQL Access"
-    from_port        = 3306
-    to_port          = 3306
-    protocol         = "tcp"
-    cidr_blocks      = [aws_vpc.longb_VPC.cidr_block]
+    description = "MySQL Access"
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
+    cidr_blocks = [aws_vpc.longb_VPC.cidr_block]
   }
 
   ingress {
-    description      = "SSH Access"
-    from_port        = 22
-    to_port          = 22
-    protocol         = "tcp"
-    cidr_blocks      = [aws_vpc.longb_VPC.cidr_block]
+    description = "SSH Access"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
@@ -94,4 +94,24 @@ resource "aws_eip" "longb_ec2_eis" {
   tags = {
     Name = "longb_ec2_eis"
   }
+}
+
+#routetable to get out the interent
+resource "aws_route_table" "longb_routetable" {
+  vpc_id = aws_vpc.longb_VPC.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.longb_igw.id
+  }
+
+  tags = {
+    Name = "example"
+  }
+}
+
+#associate routeable
+resource "aws_route_table_association" "a" {
+  subnet_id      = aws_subnet.longb_subnet1.id
+  route_table_id = aws_route_table.longb_routetable.id
 }

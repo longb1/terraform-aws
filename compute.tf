@@ -3,7 +3,7 @@ resource "aws_instance" "longb_ec2" {
   ami                  = "ami-0015a39e4b7c0966f"
   instance_type        = "t2.micro"
   availability_zone    = "eu-west-2a"
-  key_name             = "workPC"
+  key_name             = "homeKey"
   iam_instance_profile = aws_iam_instance_profile.longb_ec2profile.name #assign policy for access to s3
 
   network_interface {
@@ -15,5 +15,5 @@ resource "aws_instance" "longb_ec2" {
     Name = "longb_ec2"
   }
 
-  user_data = file("test-script.sh")
+  user_data = "${file("test-script.sh")}"
 }
