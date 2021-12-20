@@ -1,6 +1,6 @@
-Demo terraform project setup in AWS using terraform.
+My demo project in AWS using terraform.
 
 before running you will need to:
-1)authenticate aws for terraform
-2)manually generate SSH keys from portal
-3)terraform init command
+1. authenticate aws for terraform
+2. manually generate SSH keys from portal
+3. run terraform init command
