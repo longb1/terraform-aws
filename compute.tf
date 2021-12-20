@@ -3,8 +3,8 @@ resource "aws_instance" "longb_ec2" {
   ami                  = "ami-0015a39e4b7c0966f"
   instance_type        = "t2.micro"
   availability_zone    = "eu-west-2a"
-  key_name             = "homeKey"
-  iam_instance_profile = aws_iam_instance_profile.longb_ec2profile.name #assign policy for access to s3
+  key_name             = var.ec2-key
+  iam_instance_profile = aws_iam_instance_profile.longb_ec2profile.name #assign S3 Access policy
 
   network_interface {
     network_interface_id = aws_network_interface.longb_ec2NIC.id
